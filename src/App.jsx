@@ -6,6 +6,7 @@ import Loader from "./components/Loader/Loader";
 import Button from "./components/Button/Button";
 import { fetchImages } from "./api";
 import "modern-normalize-css/styles/normalize.css";
+import Modal from "./components/Modal/Modal";
 
 class App extends Component {
   state = {
@@ -13,6 +14,7 @@ class App extends Component {
     images: [],
     page: 1,
     loading: false,
+    imagePick:null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -54,12 +56,25 @@ class App extends Component {
       page: 1,
     });
   };
+  
 
   loadMore = () => {
     this.setState((prev) => {
       return {page: prev.page +1}
     }, () => {this.loadImages()})
   }
+
+  openModal= (largeImageURL)=>{
+    this.setState({
+      imagePick: largeImageURL,
+    })
+  }
+  closeModal= ()=>{
+    this.setState({
+      imagePick: null,
+    })
+  }
+
 
   // loadMore = () => {
   //   this.setState(prev => ({page: prev.page +1}), () => {this.loadImages()})
@@ -71,8 +86,12 @@ class App extends Component {
       <>
         <SearchForm onSubmit={this.handleSearch} />
         {this.state.loading && <Loader />}
-        <ImageList images={this.state.images} />
+        <ImageList images={this.state.images} onImgClick={this.openModal} />
         {this.state.images.length >0 && <Button onClick = {this.loadMore}/>}
+
+        {this.state.imagePick && <Modal image={this.state.imagePick} onClose={this.closeModal}/>}
+
+        
       </>
     );
   }

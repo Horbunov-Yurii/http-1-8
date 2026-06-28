@@ -4,11 +4,12 @@ import style from "./ImageList.module.css"
 
 class ImageList extends Component {
   render() {
+const {images, onImgClick}=this.props
     return (
       <ul className={style.list}>
-        {this.props.images.map((img) => {
+        {images.map((img) => {
           return (
-            <ImageItem key = {img.id} img = {img}/>
+            <ImageItem key = {img.id} img = {img} onClick={onImgClick}/>
             // <li key={img.id}>
             //   <img src={img.webformatURL} alt={img.tags} />
             // </li>
